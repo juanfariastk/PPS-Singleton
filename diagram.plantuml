@@ -1,0 +1,56 @@
+@startuml
+
+class DBConnect {
+    - static instance: DBConnect
+    - connection: Connection
+    - url: String
+    - user: String
+    - password: String
+    --
+    + getInstance(): DBConnect
+    + getConnection(): Connection
+    --
+    - DBConnect(): <<constructor>>
+}
+
+interface DAO<T> {
+    + save(T): void
+    + update(T, String[] params): void
+    + delete(T): void
+    + getAll(): List<T>
+    + get(id: int): T
+}
+
+class FuncionarioDAO {
+    - connection: Connection
+    --
+    + save(Funcionario): void
+    + update(Funcionario, String[] params): void
+    + delete(Funcionario): void
+    + getAll(): List<Funcionario>
+    + get(id: int): Funcionario
+}
+
+class Funcionario {
+    - id: int
+    - nome: String
+    - endereco: String
+    --
+    + getId(): int
+    + setId(id: int): void
+    + getNome(): String
+    + setNome(nome: String): void
+    + getEndereco(): String
+    + setEndereco(endereco: String): void
+}
+
+class MainSingleton {
+    + main(args: String[]): void
+}
+
+FuncionarioDAO --> DBConnect : Usa
+FuncionarioDAO --> Funcionario : Manipula
+FuncionarioDAO -|> DAO : Implementa
+MainSingleton --> FuncionarioDAO : Usa
+
+@enduml
